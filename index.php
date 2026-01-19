@@ -215,8 +215,11 @@
 
 					let btn = $(this);
 
-					if (btn.data('busy')) return;
-					btn.data('busy', true);
+					// prevent double click
+					if (btn.prop('disabled')) return;
+
+					// disable immediately
+					btn.prop('disabled', true);
 
 					let empId  = btn.data('id');
 					let status = btn.data('status');
@@ -226,14 +229,46 @@
 					btn.removeClass('btn-secondary btn-success btn-danger')
 					.addClass(newStatus === 'IN' ? 'btn-success' : 'btn-danger');
 
-					$.post('executes/logs_controller.php', { employee_id: empId, status: newStatus })
-						.done(function () {
-							loadLogs(empId);
-						})
-						.always(function () {
-							btn.data('busy', false);
-						});
+					$.post('executes/logs_controller.php', {
+						employee_id: empId,
+						status: newStatus
+					})
+					.done(function () {
+						loadLogs(empId);
+					})
+					.always(function () {
+						// re-enable after 2 seconds
+						setTimeout(function () {
+							btn.prop('disabled', false);
+						}, 1000);
+					});
 				});
+
+				// $(document).on('click', '.emp-btn', function (e) {
+				// 	e.preventDefault();
+				// 	e.stopPropagation();
+
+				// 	let btn = $(this);
+
+				// 	if (btn.data('busy')) return;
+				// 	btn.data('busy', true);
+
+				// 	let empId  = btn.data('id');
+				// 	let status = btn.data('status');
+				// 	let newStatus = (status === 'OUT') ? 'IN' : 'OUT';
+
+				// 	btn.data('status', newStatus);
+				// 	btn.removeClass('btn-secondary btn-success btn-danger')
+				// 	.addClass(newStatus === 'IN' ? 'btn-success' : 'btn-danger');
+
+				// 	$.post('executes/logs_controller.php', { employee_id: empId, status: newStatus })
+				// 		.done(function () {
+				// 			loadLogs(empId);
+				// 		})
+				// 		.always(function () {
+				// 			btn.data('busy', false);
+				// 		});
+				// });
 
 				// Load logs
 				function loadLogs(empId) {
