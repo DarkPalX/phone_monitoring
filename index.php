@@ -16,6 +16,7 @@
 				ORDER BY l.logged_at DESC
 			) AS current_status
 		FROM employees e
+		WHERE e.deleted_at IS NULL
 		ORDER BY e.id DESC
 	";
 

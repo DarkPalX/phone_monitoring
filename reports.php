@@ -18,6 +18,7 @@
 				ORDER BY l.logged_at DESC
 			) AS current_status
 		FROM employees e
+		WHERE e.deleted_at IS NULL
 		ORDER BY e.id DESC
 	";
 
@@ -47,6 +48,7 @@
 		LEFT JOIN logs l
 			ON l.employee_id = e.id
 			AND CAST(l.logged_at AS DATE) = d.log_date
+		WHERE e.deleted_at IS NULL
 		GROUP BY d.log_date, e.name
 		ORDER BY d.log_date DESC, e.name
 		OPTION (MAXRECURSION 1000);

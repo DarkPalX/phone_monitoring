@@ -28,7 +28,8 @@
     if (isset($_GET['action']) && $_GET['action'] === 'delete') {
         $id = $_GET['id'] ?? null;
         if ($id) {
-            $sql = "DELETE FROM employees WHERE id=?";
+            $sql = "UPDATE employees SET deleted_at=GETDATE(), updated_at=GETDATE() WHERE id=?";
+            // $sql = "DELETE FROM employees WHERE id=?";
             sqlsrv_query($conn, $sql, [$id]);
         }
         header("Location: ../index.php");

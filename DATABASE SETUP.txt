@@ -6,6 +6,10 @@ CREATE TABLE employees (
     updated_at DATETIME
 );
 
+
+ALTER TABLE employees ADD deleted_at DATETIME2 NULL DEFAULT NULL;
+
+
 CREATE TABLE logs (
     id INT IDENTITY PRIMARY KEY,
     employee_id INT,
