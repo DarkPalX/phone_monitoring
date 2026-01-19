@@ -1,0 +1,47 @@
+
+CREATE TABLE employees (
+    id INT IDENTITY PRIMARY KEY,
+    name VARCHAR(100),
+    created_at DATETIME,
+    updated_at DATETIME
+);
+
+CREATE TABLE logs (
+    id INT IDENTITY PRIMARY KEY,
+    employee_id INT,
+    status VARCHAR(10), -- IN or OUT
+    logged_at DATETIME,
+    duration INT NULL -- seconds (only filled on OUT)
+);
+
+
+TRUNCATE TABLE employees;
+TRUNCATE TABLE logs;
+
+
+INSERT INTO employees (name, created_at, updated_at) VALUES 
+('Kiray', GETDATE(), GETDATE()),
+('Pagaw', GETDATE(), GETDATE()),
+('Unano', GETDATE(), GETDATE()),
+('Tambok', GETDATE(), GETDATE()),
+('Nazanegro', GETDATE(), GETDATE()),
+('Jinggoy', GETDATE(), GETDATE());
+
+
+
+TEST QUERIES
+
+
+
+--DELETE FROM logs
+--WHERE logged_at >= CAST(GETDATE() AS DATE)
+--  AND logged_at <  DATEADD(DAY, 1, CAST(GETDATE() AS DATE));
+
+
+  
+SELECT * FROM logs
+WHERE logged_at >= CAST(GETDATE() AS DATE)
+  AND logged_at <  DATEADD(DAY, 1, CAST(GETDATE() AS DATE)) ORDER BY id DESC;
+
+
+select * from logs
